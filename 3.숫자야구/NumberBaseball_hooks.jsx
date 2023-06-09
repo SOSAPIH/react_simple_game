@@ -24,8 +24,8 @@ const NumberBaseball = (props) => {
         if (value === answer.join('')) {//홈런
             setResult('홈런!');
             setValue('');
-            setTries(t => {
-                return [...t, { try: value, result: '홈런!' }];
+            setTries(prev => {
+                return [...prev, { try: value, result: '홈런!' }];
             });
             alert('게임을 다시 시작합니다!');
             setAnswer(getNumbers());
@@ -50,8 +50,8 @@ const NumberBaseball = (props) => {
                         ball++;
                     }
                 }
-                setTries(t => 
-                     [...t, { try: value, result: `${strike} 스트라이크 ${ball} 볼 입니다.` }]
+                setTries(prev => 
+                     [...prev, { try: value, result: `${strike} 스트라이크 ${ball} 볼 입니다.` }]
                 );
                 setValue('');
                 inputRef.current.focus();
@@ -71,7 +71,7 @@ const NumberBaseball = (props) => {
                 <div>시도: {tries.length}</div>
                 <ol>
                     {tries.map((v, i) => {
-                        return <Try key={`${i+1}차 시도: `} tryInfo={v} />
+                        return <Try key={`${i + 1}차 시도: `} tryInfo={v} />
                     })}
                 </ol>
             </>  

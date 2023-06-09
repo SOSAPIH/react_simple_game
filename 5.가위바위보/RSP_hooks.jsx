@@ -20,7 +20,7 @@ const RSP = () => {
     const [result, setResult] = useState('');
     const [imgCoord, setImgCoord] = useState(rspCoord.가위);
     const [score, setScore] = useState(0);
-    let clickable = false;
+    const [clickable, setClickable] = useState(false);
     const [isRunning, setIsRunning] = useState(true);
     
     const changeHand = () => {
@@ -35,10 +35,12 @@ const RSP = () => {
 
     useInterval(changeHand, isRunning ? 100 : null);
     
-    const onClickBtn = choice => () => {
+    const onClickBtn = (choice) => () => {
         if (clickable) return;
-        clickable = true;
-        if (isRunning) {setIsRunning(false); }
+        setClickable(true);
+        if (isRunning) {
+            setIsRunning(false);
+        }
         const myScore = scores[choice];
         const comScore = scores[computerChoice(imgCoord)];
         const diff = myScore - comScore;
@@ -47,14 +49,14 @@ const RSP = () => {
             
         } else if ([-1, 2].includes(diff)) {
             setResult('이겼습니다');
-            setScore(prevScore => prevScore + 1);
+            setScore(prev => prev + 1);
         } else {
             setResult('졌습니다');
-            setScore(prevScore => prevScore - 1);
+            setScore(prev => prev - 1);
         }
         
         setTimeout(() => {
-            clickable = false;
+            setClickable(false);
             setIsRunning(true);
         }, 1200);
     }
@@ -63,8 +65,8 @@ const RSP = () => {
       <>
         <div id="computer" style={{ background: `url(https://en.pimg.jp/023/182/267/1/23182267.jpg) ${imgCoord} 0` }} />
         <div>
-          <button id="rock" className="btn" onClick={onClickBtn('바위')}>바위</button>
           <button id="scissor" className="btn" onClick={onClickBtn('가위')}>가위</button>
+          <button id="rock" className="btn" onClick={onClickBtn('바위')}>바위</button>
           <button id="paper" className="btn" onClick={onClickBtn('보')}>보</button>
         </div>
         <div>{result}</div>

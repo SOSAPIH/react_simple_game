@@ -2,7 +2,7 @@
 <head>
   <meta charset="utf-8">
   <title>구구단</title>
-  <!--<script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>-->
+  <!--<script src="https://unpkg.com/react@16/umd/react.production.min.js" crossorigin></script>--> 
   <!--<script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js" crossorigin></script>-->
 </head>
 <body>
@@ -21,7 +21,7 @@
 
       const onSubmitForm = (e) => {
         e.preventDefault();
-        if(parseInt(value) === first*second){
+        if(parseInt(value) === first * second){
           setResult('정답: ' + value);
           setValue('');
           setFirst(Math.ceil(Math.random()*9));
