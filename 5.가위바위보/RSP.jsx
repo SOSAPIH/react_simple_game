@@ -22,9 +22,9 @@ class RSP extends Component {
         result: '',
         imgCoord: rspCoord.가위, // '-142px'
         score: 0,
+        clickable: false,
     };
     interval;
-    clickable = false;
     
     changeHand = () => {
     const {imgCoord} = this.state;
@@ -55,36 +55,34 @@ class RSP extends Component {
     
     
     onClickBtn = choice => () => { //이벤트 핸들러의 메서드 이기 때문에 함수를 return해야함
-        if (this.clickable) return;
-        this.clickable = true;
-        const { imgCoord } = this.state;
-        clearInterval(this.interval);
-        const myScore = scores[choice];
-        const comScore = scores[computerChoice(imgCoord)];
-        const diff = myScore - comScore;
-        if (diff === 0) {
-            this.setState({
-                result: '비겼습니다'
-            });
-        } else if ([-1, 2].includes(diff)) {
-            this.setState((prev) => {
-                return {
-                    result: '이겼습니다',
-                    score: prev.score + 1,
-                }
-            })
-        } else {
-            this.setState((prev) => {
-                return {
-                    result: '졌습니다',
-                    score: prev.score - 1,
-                }
-            })
-        }
+      const { imgCoord } = this.state;
+      if (this.state.clickable) return;
+      this.setState({ clickable: true });
+      clearInterval(this.interval);
+      const myScore = scores[choice];
+      const comScore = scores[computerChoice(imgCoord)];
+      const diff = myScore - comScore;
+      if (diff === 0) {
+        this.setState({ result: '비겼습니다' });
+      } else if ([-1, 2].includes(diff)) {
+        this.setState((prev) => {
+          return {
+            result: '이겼습니다',
+            score: prev.score + 1,
+          }
+        })
+      } else {
+        this.setState((prev) => {
+          return {
+            result: '졌습니다',
+            score: prev.score - 1,
+          }
+        })
+      }
         
         setTimeout(() => {
-            this.clickable = false;
-            this.interval = setInterval(this.changeHand, 100);  
+          this.setState({ clickable: false });
+          this.interval = setInterval(this.changeHand, 100);  
         }, 1200);
     }
     

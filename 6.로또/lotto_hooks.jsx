@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import Ball from './Ball'; 
 
-
 function getWinNumbers() {
     console.log('getWinNumbers');
     const candidate = Array(45).fill().map((v, i) => i + 1);
@@ -10,21 +9,19 @@ function getWinNumbers() {
         shuffle.push(candidate.splice(Math.floor(Math.random()*candidate.length),1)[0])
     }
     const bonusNumber = shuffle[shuffle.length - 1];
-    const winNumbers = shuffle.slice(0, 6).sort((a, b) => a - b);
+    const winNumbers = shuffle.slice(0, 6).sort((a, b) => a - b);//오름차순 정렬
     return [...winNumbers, bonusNumber];
 }
 
 const Lotto = () => {
-    const [winNumbers, setWinNumbers] = useState(lottoNumber);
-    const lottoNumber = useMemo(() => getWinNumbers(), [winBalls]);
     const [winBalls, setWinBalls] = useState([]);
+    const lottoNumber = useMemo(() => getWinNumbers(), [winBalls]);
+    const [winNumbers, setWinNumbers] = useState(lottoNumber);
     const [bonus, setBonus] = useState(null);
     const [redo, setRedo] = useState(false);
     const timeouts = useRef([]);
 
-
     useEffect(() => {
-        console.log('useEffect');
         for (let i = 0; i < winNumbers.length - 1; i++){
             timeouts.current[i] = setTimeout(() => {
                 setWinBalls((prevBalls) => [...prevBalls, winNumbers[i]]);

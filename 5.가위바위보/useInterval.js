@@ -1,4 +1,4 @@
-//customHooks
+//customHook
 import { useRef, useEffect } from 'react';
 
 function useInterval(callback, delay) {
@@ -7,22 +7,20 @@ function useInterval(callback, delay) {
     useEffect(() => {
         savedCallback.current = callback;
     }, []);
-
+    
     useEffect(() => {
-        function tick() {
-            savedCallback.current();
-        }
+        savedCallback.current();
+        // function tick() {
+        // }
 
     if (delay !== null) {
-        let id = setInterval(tick, delay);
+        let id = setInterval(savedCallback.current, delay);
         return () => clearInterval(id);
         }
     }, [delay]);
 
     return savedCallback.current;
 }
-
-export default useInterval;
 
 // ----------------------------------------------------------------
 function $useInterval(callback, delay) {
@@ -34,3 +32,5 @@ function $useInterval(callback, delay) {
     }, [delay, callback]);
     return callback;
 }
+
+export default $useInterval;

@@ -10,5 +10,5 @@ const Table = memo(({ tableData, dispatch }) => {
         </table>
     )
 });
-
+ 
 export default Table;   

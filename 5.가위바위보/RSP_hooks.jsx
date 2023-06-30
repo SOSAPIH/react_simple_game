@@ -1,5 +1,6 @@
-import React, { useState, useRef, useEffect } from 'react';
-import useInterval from './useInterval';
+import React, { useState } from 'react';
+import $useInterval from './useInterval.js';
+
 
 const rspCoord = {
     바위: '0',
@@ -12,8 +13,11 @@ const scores = {
     보: -1,
 }
 
+
 const computerChoice = (imgCoord) => {
-    return Object.entries(rspCoord).find( v => v[1] === imgCoord)[0]
+    return Object.entries(rspCoord).find(function (v) {
+        return v[1] === imgCoord
+    })[0]
 } // return 가위 바위 보
 
 const RSP = () => {
@@ -24,20 +28,21 @@ const RSP = () => {
     const [isRunning, setIsRunning] = useState(true);
     
     const changeHand = () => {
-    if (imgCoord === rspCoord.바위) {
-        setImgCoord(rspCoord.보);
-    } else if (imgCoord === rspCoord.가위) {
-        setImgCoord(rspCoord.바위);
-    } else if (imgCoord === rspCoord.보) {
-        setImgCoord(rspCoord.가위);
-    }
-        };
-
-    useInterval(changeHand, isRunning ? 100 : null);
+        if (imgCoord === rspCoord.가위) {
+            setImgCoord(rspCoord.바위);
+        } else if (imgCoord === rspCoord.바위) {
+            setImgCoord(rspCoord.보);
+        } else if (imgCoord === rspCoord.보) {
+            setImgCoord(rspCoord.가위);
+        }
+        console.log(imgCoord);
+    };
     
+    $useInterval(changeHand, isRunning ? 100 : null);
+
     const onClickBtn = (choice) => () => {
         if (clickable) return;
-        setClickable(true);
+            setClickable(true);
         if (isRunning) {
             setIsRunning(false);
         }
@@ -46,7 +51,6 @@ const RSP = () => {
         const diff = myScore - comScore;
         if (diff === 0) {
             setResult('비겼습니다');
-            
         } else if ([-1, 2].includes(diff)) {
             setResult('이겼습니다');
             setScore(prev => prev + 1);
@@ -61,8 +65,15 @@ const RSP = () => {
         }, 1200);
     }
      
+    const onReset = () => {
+        setResult('');
+        setScore(0);
+        setIsRunning(true);
+    }
+
+
    return (
-      <>
+       <>
         <div id="computer" style={{ background: `url(https://en.pimg.jp/023/182/267/1/23182267.jpg) ${imgCoord} 0` }} />
         <div>
           <button id="scissor" className="btn" onClick={onClickBtn('가위')}>가위</button>
@@ -71,6 +82,13 @@ const RSP = () => {
         </div>
         <div>{result}</div>
         <div>현재 {score}점</div>
+           {score > 2 ? <div>
+               <div>승리하셨습니다!</div>
+               <button onClick={onReset}>Reset</button>
+           </div> : score < -2 ? <div>
+                <div>패배하셨습니다!</div>
+                <button onClick={onReset}>Reset</button>
+        </div> : null}
       </>
     );
 }
